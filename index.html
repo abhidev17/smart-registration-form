@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Registration Form</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Google Fonts: Inter for body, Syne for display -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="light-mode">
+
+  <!-- ===== DARK/LIGHT MODE TOGGLE ===== -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+    <span class="theme-icon">🌙</span>
+  </button>
+
+  <!-- ===== BACKGROUND ORBS (ambient decoration) ===== -->
+  <div class="bg-orb orb-1" aria-hidden="true"></div>
+  <div class="bg-orb orb-2" aria-hidden="true"></div>
+  <div class="bg-orb orb-3" aria-hidden="true"></div>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <header class="page-header">
+    <h1 class="page-title">Smart Registration</h1>
+    <p class="page-subtitle">Create your account in minutes</p>
+  </header>
+
+  <!-- ===== PROGRESS BAR ===== -->
+  <div class="progress-wrapper" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Form completion progress" id="progressWrapper">
+    <div class="progress-bar" id="progressBar"></div>
+    <span class="progress-label" id="progressLabel">0% Complete</span>
+  </div>
+
+  <!-- ===== MAIN LAYOUT: FORM + PREVIEW CARD ===== -->
+  <main class="main-layout">
+
+    <!-- ===== REGISTRATION FORM ===== -->
+    <form class="reg-form glass-card" id="regForm" novalidate aria-label="Registration form">
+
+      <!-- ── SECTION 1: PERSONAL INFORMATION ── -->
+      <section class="form-section" aria-labelledby="sec-personal">
+        <h2 class="section-heading" id="sec-personal">
+          <span class="section-num">01</span> Personal Information
+        </h2>
+
+        <!-- Full Name -->
+        <div class="field-group" id="fg-fullname">
+          <label class="field-label" for="fullName">Full Name <span class="required" aria-hidden="true">*</span></label>
+          <input class="field-input" type="text" id="fullName" name="fullName"
+            placeholder="Jane Doe"
+            autocomplete="name"
+            aria-required="true"
+            aria-describedby="fullName-error fullName-ok" />
+          <span class="field-error" id="fullName-error" role="alert" aria-live="polite"></span>
+          <span class="field-ok" id="fullName-ok" aria-live="polite"></span>
+        </div>
+
+        <!-- Username -->
+        <div class="field-group" id="fg-username">
+          <label class="field-label" for="username">Username <span class="required" aria-hidden="true">*</span></label>
+          <input class="field-input" type="text" id="username" name="username"
+            placeholder="janedoe_42"
+            autocomplete="username"
+            minlength="4"
+            aria-required="true"
+            aria-describedby="username-error username-ok" />
+          <span class="field-hint">Minimum 4 characters</span>
+          <span class="field-error" id="username-error" role="alert" aria-live="polite"></span>
+          <span class="field-ok" id="username-ok" aria-live="polite"></span>
+        </div>
+
+        <!-- Email -->
+        <div class="field-group" id="fg-email">
+          <label class="field-label" for="email">Email Address <span class="required" aria-hidden="true">*</span></label>
+          <input class="field-input" type="email" id="email" name="email"
+            placeholder="jane@example.com"
+            autocomplete="email"
+            aria-required="true"
+            aria-describedby="email-error email-ok" />
+          <span class="field-error" id="email-error" role="alert" aria-live="polite"></span>
+          <span class="field-ok" id="email-ok" aria-live="polite"></span>
+        </div>
+
+        <!-- Phone -->
+        <div class="field-group" id="fg-phone">
+          <label class="field-label" for="phone">Phone Number <span class="required" aria-hidden="true">*</span></label>
+          <input class="field-input" type="tel" id="phone" name="phone"
+            placeholder="+1 (555) 000-0000"
+            autocomplete="tel"
+            aria-required="true"
+            aria-describedby="phone-error phone-ok" />
+          <span class="field-error" id="phone-error" role="alert" aria-live="polite"></span>
+          <span class="field-ok" id="phone-ok" aria-live="polite"></span>
+        </div>
+
+        <!-- Date of Birth + Age (auto-calculated) -->
+        <div class="field-row">
+          <div class="field-group" id="fg-dob">
+            <label class="field-label" for="dob">Date of Birth <span class="required" aria-hidden="true">*</span></label>
+            <input class="field-input" type="date" id="dob" name="dob"
+              aria-required="true"
+              aria-describedby="dob-error dob-ok" />
+            <span class="field-error" id="dob-error" role="alert" aria-live="polite"></span>
+            <span class="field-ok" id="dob-ok" aria-live="polite"></span>
+          </div>
+          <div class="field-group" id="fg-age">
+            <label class="field-label" for="age">Age (auto-calculated)</label>
+            <input class="field-input" type="number" id="age" name="age"
+              placeholder="—"
+              readonly
+              tabindex="-1"
+              aria-readonly="true" />
+          </div>
+        </div>
+
+        <!-- Gender -->
+        <div class="field-group" id="fg-gender">
+          <fieldset class="radio-fieldset" aria-required="true">
+            <legend class="field-label">Gender <span class="required" aria-hidden="true">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="gender" value="female" aria-describedby="gender-error" />
+                <span class="radio-custom"></span> Female
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="gender" value="male" aria-describedby="gender-error" />
+                <span class="radio-custom"></span> Male
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="gender" value="nonbinary" aria-describedby="gender-error" />
+                <span class="radio-custom"></span> Non-binary
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="gender" value="prefer-not" aria-describedby="gender-error" />
+                <span class="radio-custom"></span> Prefer not to say
+              </label>
+            </div>
+          </fieldset>
+          <span class="field-error" id="gender-error" role="alert" aria-live="polite"></span>
+          <span class="field-ok" id="gender-ok" aria-live="polite"></span>
+        </div>
+
+        <!-- Profile Picture -->
+        <div class="field-group" id="fg-avatar">
+          <label class="field-label" for="avatar">Profile Picture</label>
+          <div class="file-upload-area" id="avatarDropzone" aria-label="Upload profile picture">
+            <input class="file-input" type="file" id="avatar" name="avatar"
+              accept="image/png,image/jpeg,image/gif,image/webp"
+              aria-describedby="avatar-hint avatar-error" />
+            <div class="file-upload-icon">🖼️</div>
+            <p class="file-upload-text">Drop image here or <span class="file-browse">browse</span></p>
+            <p class="file-hint" id="avatar-hint">PNG, JPG, GIF or WEBP · max 5 MB</p>
+            <img class="avatar-preview" id="avatarPreview" src="" alt="Avatar preview" hidden />
+          </div>
+          <span class="field-error" id="avatar-error" role="alert" aria-live="polite"></span>
+          <span class="field-ok" id="avatar-ok" aria-live="polite"></span>
+        </div>
+      </section>
+
+      <!-- ── SECTION 2: ADDRESS ── -->
+      <section class="form-section" aria-labelledby="sec-address">
+        <h2 class="section-heading" id="sec-address">
+          <span class="section-num">02</span> Address
+        </h2>
+
+        <!-- Country -->
+        <div class="field-group" id="fg-country">
+          <label class="field-label" for="country">Country <span class="required" aria-hidden="true">*</span></label>
+          <select class="field-input field-select" id="country" name="country"
+            aria-required="true"
+            aria-describedby="country-error country-ok">
+            <option value="">— Select country —</option>
+            <option value="us">United States</option>
+            <option value="gb">United Kingdom</option>
+            <option value="ca">Canada</option>
+            <option value="au">Australia</option>
+            <option value="in">India</option>
+            <option value="de">Germany</option>
+            <option value="fr">France</option>
+            <option value="jp">Japan</option>
+            <option value="br">Brazil</option>
+            <option value="mx">Mexico</option>
+            <option value="other">Other</option>
+          </select>
+          <span class="field-error" id="country-error" role="alert" aria-live="polite"></span>
+          <span class="field-ok" id="country-ok" aria-live="polite"></span>
+        </div>
+
+        <!-- State & City -->
+        <div class="field-row">
+          <div class="field-group" id="fg-state">
+            <label class="field-label" for="state">State / Province</label>
+            <input class="field-input" type="text" id="state" name="state"
+              placeholder="California"
+              autocomplete="address-level1"
+              aria-describedby="state-error" />
+            <span class="field-error" id="state-error" role="alert" aria-live="polite"></span>
+          </div>
+          <div class="field-group" id="fg-city">
+            <label class="field-label" for="city">City <span class="required" aria-hidden="true">*</span></label>
+            <input class="field-input" type="text" id="city" name="city"
+              placeholder="San Francisco"
+              autocomplete="address-level2"
+              aria-required="true"
+              aria-describedby="city-error city-ok" />
+            <span class="field-error" id="city-error" role="alert" aria-live="polite"></span>
+            <span class="field-ok" id="city-ok" aria-live="polite"></span>
+          </div>
+        </div>
+
+        <!-- ZIP -->
+        <div class="field-group" id="fg-zip">
+          <label class="field-label" for="zip">ZIP / Postal Code <span class="required" aria-hidden="true">*</span></label>
+          <input class="field-input" type="text" id="zip" name="zip"
+            placeholder="94102"
+            autocomplete="postal-code"
+            aria-required="true"
+            aria-describedby="zip-error zip-ok" />
+          <span class="field-error" id="zip-error" role="alert" aria-live="polite"></span>
+          <span class="field-ok" id="zip-ok" aria-live="polite"></span>
+        </div>
+
+        <!-- Full Address -->
+        <div class="field-group" id="fg-address">
+          <label class="field-label" for="address">Full Address</label>
+          <textarea class="field-input field-textarea" id="address" name="address"
+            placeholder="123 Main St, Apt 4B"
+            rows="3"
+            autocomplete="street-address"
+            aria-describedby="address-error"></textarea>
+          <span class="field-error" id="address-error" role="alert" aria-live="polite"></span>
+        </div>
+      </section>
+
+      <!-- ── SECTION 3: ACCOUNT DETAILS ── -->
+      <section class="form-section" aria-labelledby="sec-account">
+        <h2 class="section-heading" id="sec-account">
+          <span class="section-num">03</span> Account Details
+        </h2>
+
+        <!-- Password -->
+        <div class="field-group" id="fg-password">
+          <label class="field-label" for="password">Password <span class="required" aria-hidden="true">*</span></label>
+          <div class="password-wrapper">
+            <input class="field-input" type="password" id="password" name="password"
+              placeholder="Create a strong password"
+              autocomplete="new-password"
+              aria-required="true"
+              aria-describedby="password-strength-text password-error password-ok" />
+            <button type="button" class="toggle-visibility" id="togglePassword"
+              aria-label="Show password" aria-pressed="false">👁️</button>
+          </div>
+          <!-- Password Strength Meter -->
+          <div class="strength-meter" aria-hidden="true">
+            <div class="strength-bar" id="strengthBar"></div>
+          </div>
+          <span class="strength-text" id="password-strength-text" aria-live="polite"></span>
+          <span class="field-error" id="password-error" role="alert" aria-live="polite"></span>
+          <span class="field-ok" id="password-ok" aria-live="polite"></span>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="field-group" id="fg-confirm-password">
+          <label class="field-label" for="confirmPassword">Confirm Password <span class="required" aria-hidden="true">*</span></label>
+          <div class="password-wrapper">
+            <input class="field-input" type="password" id="confirmPassword" name="confirmPassword"
+              placeholder="Repeat your password"
+              autocomplete="new-password"
+              aria-required="true"
+              aria-describedby="confirmPassword-error confirmPassword-ok" />
+            <button type="button" class="toggle-visibility" id="toggleConfirmPassword"
+              aria-label="Show confirm password" aria-pressed="false">👁️</button>
+          </div>
+          <span class="field-error" id="confirmPassword-error" role="alert" aria-live="polite"></span>
+          <span class="field-ok" id="confirmPassword-ok" aria-live="polite"></span>
+        </div>
+
+        <!-- Security Question -->
+        <div class="field-group" id="fg-secQuestion">
+          <label class="field-label" for="secQuestion">Security Question <span class="required" aria-hidden="true">*</span></label>
+          <select class="field-input field-select" id="secQuestion" name="secQuestion"
+            aria-required="true"
+            aria-describedby="secQuestion-error secQuestion-ok">
+            <option value="">— Choose a question —</option>
+            <option value="pet">What was the name of your first pet?</option>
+            <option value="school">What elementary school did you attend?</option>
+            <option value="city">In what city were you born?</option>
+            <option value="mother">What is your mother's maiden name?</option>
+            <option value="car">What was the make of your first car?</option>
+          </select>
+          <span class="field-error" id="secQuestion-error" role="alert" aria-live="polite"></span>
+          <span class="field-ok" id="secQuestion-ok" aria-live="polite"></span>
+        </div>
+
+        <!-- Security Answer -->
+        <div class="field-group" id="fg-secAnswer">
+          <label class="field-label" for="secAnswer">Security Answer <span class="required" aria-hidden="true">*</span></label>
+          <input class="field-input" type="text" id="secAnswer" name="secAnswer"
+            placeholder="Your answer"
+            aria-required="true"
+            aria-describedby="secAnswer-error secAnswer-ok" />
+          <span class="field-error" id="secAnswer-error" role="alert" aria-live="polite"></span>
+          <span class="field-ok" id="secAnswer-ok" aria-live="polite"></span>
+        </div>
+      </section>
+
+      <!-- ── SECTION 4: PREFERENCES ── -->
+      <section class="form-section" aria-labelledby="sec-prefs">
+        <h2 class="section-heading" id="sec-prefs">
+          <span class="section-num">04</span> Preferences
+        </h2>
+
+        <!-- Skills (Checkboxes) -->
+        <div class="field-group" id="fg-skills">
+          <fieldset class="checkbox-fieldset">
+            <legend class="field-label">Skills (select all that apply)</legend>
+            <div class="checkbox-grid">
+              <label class="checkbox-label"><input type="checkbox" name="skills" value="html" /><span class="checkbox-custom"></span> HTML</label>
+              <label class="checkbox-label"><input type="checkbox" name="skills" value="css" /><span class="checkbox-custom"></span> CSS</label>
+              <label class="checkbox-label"><input type="checkbox" name="skills" value="js" /><span class="checkbox-custom"></span> JavaScript</label>
+              <label class="checkbox-label"><input type="checkbox" name="skills" value="python" /><span class="checkbox-custom"></span> Python</label>
+              <label class="checkbox-label"><input type="checkbox" name="skills" value="design" /><span class="checkbox-custom"></span> Design</label>
+              <label class="checkbox-label"><input type="checkbox" name="skills" value="sql" /><span class="checkbox-custom"></span> SQL</label>
+              <label class="checkbox-label"><input type="checkbox" name="skills" value="react" /><span class="checkbox-custom"></span> React</label>
+              <label class="checkbox-label"><input type="checkbox" name="skills" value="node" /><span class="checkbox-custom"></span> Node.js</label>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- Experience Level -->
+        <div class="field-group" id="fg-experience">
+          <label class="field-label" for="experience">Experience Level <span class="required" aria-hidden="true">*</span></label>
+          <select class="field-input field-select" id="experience" name="experience"
+            aria-required="true"
+            aria-describedby="experience-error experience-ok">
+            <option value="">— Select level —</option>
+            <option value="student">Student / Learner</option>
+            <option value="junior">Junior (0–2 yrs)</option>
+            <option value="mid">Mid-level (2–5 yrs)</option>
+            <option value="senior">Senior (5–10 yrs)</option>
+            <option value="lead">Lead / Principal (10+ yrs)</option>
+          </select>
+          <span class="field-error" id="experience-error" role="alert" aria-live="polite"></span>
+          <span class="field-ok" id="experience-ok" aria-live="polite"></span>
+        </div>
+
+        <!-- Favourite Color + Preferred Time -->
+        <div class="field-row">
+          <div class="field-group" id="fg-favColor">
+            <label class="field-label" for="favColor">Favorite Color</label>
+            <div class="color-wrapper">
+              <input class="color-input" type="color" id="favColor" name="favColor"
+                value="#6366f1"
+                aria-describedby="favColor-label-val" />
+              <span class="color-value" id="favColor-label-val">#6366f1</span>
+            </div>
+          </div>
+          <div class="field-group" id="fg-prefTime">
+            <label class="field-label" for="prefTime">Preferred Time</label>
+            <input class="field-input" type="time" id="prefTime" name="prefTime"
+              aria-describedby="prefTime-error" />
+            <span class="field-error" id="prefTime-error" role="alert" aria-live="polite"></span>
+          </div>
+        </div>
+
+        <!-- Preferred Date + Portfolio URL -->
+        <div class="field-row">
+          <div class="field-group" id="fg-prefDate">
+            <label class="field-label" for="prefDate">Preferred Start Date</label>
+            <input class="field-input" type="date" id="prefDate" name="prefDate" />
+          </div>
+          <div class="field-group" id="fg-portfolio">
+            <label class="field-label" for="portfolio">Portfolio Website</label>
+            <input class="field-input" type="url" id="portfolio" name="portfolio"
+              placeholder="https://yoursite.com"
+              aria-describedby="portfolio-error portfolio-ok" />
+            <span class="field-error" id="portfolio-error" role="alert" aria-live="polite"></span>
+            <span class="field-ok" id="portfolio-ok" aria-live="polite"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SECTION 5: ADDITIONAL ── -->
+      <section class="form-section" aria-labelledby="sec-additional">
+        <h2 class="section-heading" id="sec-additional">
+          <span class="section-num">05</span> Additional
+        </h2>
+
+        <!-- Resume Upload -->
+        <div class="field-group" id="fg-resume">
+          <label class="field-label" for="resume">Resume (PDF only, max 10 MB)</label>
+          <div class="file-upload-area" id="resumeDropzone">
+            <input class="file-input" type="file" id="resume" name="resume"
+              accept="application/pdf"
+              aria-describedby="resume-hint resume-error" />
+            <div class="file-upload-icon">📄</div>
+            <p class="file-upload-text">Drop PDF here or <span class="file-browse">browse</span></p>
+            <p class="file-hint" id="resume-hint">PDF only · max 10 MB</p>
+            <p class="file-chosen" id="resumeChosen" hidden></p>
+          </div>
+          <span class="field-error" id="resume-error" role="alert" aria-live="polite"></span>
+          <span class="field-ok" id="resume-ok" aria-live="polite"></span>
+        </div>
+
+        <!-- Satisfaction Rating -->
+        <div class="field-group" id="fg-satisfaction">
+          <label class="field-label" for="satisfaction">
+            Satisfaction Rating — <span id="satisfactionVal">5</span>/10
+          </label>
+          <input class="range-input" type="range" id="satisfaction" name="satisfaction"
+            min="1" max="10" value="5" step="1"
+            aria-valuemin="1" aria-valuemax="10" aria-valuenow="5"
+            aria-describedby="satisfactionVal" />
+          <div class="range-labels"><span>1</span><span>10</span></div>
+        </div>
+
+        <!-- Personal Bio with live counter -->
+        <div class="field-group" id="fg-bio">
+          <label class="field-label" for="bio">
+            Personal Bio <span class="required" aria-hidden="true">*</span>
+            <span class="bio-counter" id="bioCounter">0 / 300</span>
+          </label>
+          <textarea class="field-input field-textarea" id="bio" name="bio"
+            placeholder="Tell us a bit about yourself…"
+            rows="5"
+            maxlength="300"
+            aria-required="true"
+            aria-describedby="bioCounter bio-error bio-ok"></textarea>
+          <span class="field-error" id="bio-error" role="alert" aria-live="polite"></span>
+          <span class="field-ok" id="bio-ok" aria-live="polite"></span>
+        </div>
+
+        <!-- Terms & Conditions -->
+        <div class="field-group" id="fg-terms">
+          <label class="checkbox-label terms-label">
+            <input type="checkbox" id="terms" name="terms"
+              aria-required="true"
+              aria-describedby="terms-error" />
+            <span class="checkbox-custom"></span>
+            I agree to the <a href="#" class="terms-link">Terms &amp; Conditions</a>
+            and <a href="#" class="terms-link">Privacy Policy</a>
+            <span class="required" aria-hidden="true"> *</span>
+          </label>
+          <span class="field-error" id="terms-error" role="alert" aria-live="polite"></span>
+          <span class="field-ok" id="terms-ok" aria-live="polite"></span>
+        </div>
+      </section>
+
+      <!-- ── FORM ACTIONS ── -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost" id="resetBtn" aria-label="Reset all form fields">
+          ↩ Reset Form
+        </button>
+        <button type="submit" class="btn btn-primary" id="submitBtn" aria-label="Submit registration">
+          <span class="btn-text">Create Account</span>
+          <span class="btn-spinner" aria-hidden="true" hidden></span>
+        </button>
+      </div>
+
+    </form>
+    <!-- END #regForm -->
+
+    <!-- ===== LIVE PREVIEW CARD ===== -->
+    <aside class="preview-card glass-card" aria-label="Live profile preview" aria-live="polite">
+      <h2 class="preview-heading">Profile Preview</h2>
+
+      <div class="preview-avatar-wrap">
+        <img class="preview-avatar" id="previewAvatar" src="" alt="Profile avatar" hidden />
+        <div class="preview-avatar-placeholder" id="previewAvatarPlaceholder" aria-hidden="true">👤</div>
+      </div>
+
+      <div class="preview-name" id="previewName">Your Name</div>
+      <div class="preview-username" id="previewUsername">@username</div>
+
+      <div class="preview-details">
+        <div class="preview-row"><span class="preview-icon">📧</span><span id="previewEmail">—</span></div>
+        <div class="preview-row"><span class="preview-icon">📱</span><span id="previewPhone">—</span></div>
+        <div class="preview-row"><span class="preview-icon">🎂</span><span id="previewDob">—</span></div>
+        <div class="preview-row"><span class="preview-icon">📍</span><span id="previewLocation">—</span></div>
+        <div class="preview-row"><span class="preview-icon">💼</span><span id="previewExperience">—</span></div>
+        <div class="preview-row"><span class="preview-icon">🌐</span><span id="previewPortfolio">—</span></div>
+      </div>
+
+      <!-- Favorite color accent bar -->
+      <div class="preview-color-bar" id="previewColorBar" aria-hidden="true"></div>
+
+      <div class="preview-bio" id="previewBio"><em>No bio yet…</em></div>
+
+      <div class="preview-skills" id="previewSkills"></div>
+
+      <div class="preview-satisfaction">
+        <span>Satisfaction</span>
+        <div class="satisfaction-dots" id="satisfactionDots" aria-hidden="true"></div>
+        <span id="previewSatisfaction">5/10</span>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- ===== SUCCESS MODAL ===== -->
+  <div class="modal-overlay" id="modalOverlay" hidden aria-modal="true" role="dialog" aria-labelledby="modalTitle">
+    <div class="modal glass-card">
+      <div class="modal-success-anim" aria-hidden="true">
+        <div class="checkmark-circle">
+          <svg class="checkmark" viewBox="0 0 52 52" aria-hidden="true">
+            <circle class="checkmark-circle-bg" cx="26" cy="26" r="25" fill="none" />
+            <path class="checkmark-check" fill="none" d="M14 27 l7 8 17-18" />
+          </svg>
+        </div>
+      </div>
+      <h2 class="modal-title" id="modalTitle">Registration Complete! 🎉</h2>
+      <p class="modal-subtitle">Your account has been created and saved successfully.</p>
+      <div class="modal-data" id="modalData"></div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="modalClose" aria-label="Close success modal">Close</button>
+        <button class="btn btn-primary" id="modalNewReg" aria-label="Start a new registration">New Registration</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
